@@ -1,4 +1,4 @@
-package com.example.spring.repository;
+package com.example.spring.exception;
 
 public class DataProcessingException extends RuntimeException {
     public DataProcessingException(String s) {

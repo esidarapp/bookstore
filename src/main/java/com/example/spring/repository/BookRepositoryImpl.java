@@ -1,27 +1,29 @@
 package com.example.spring.repository;
 
+import com.example.spring.exception.DataProcessingException;
 import com.example.spring.model.Book;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
-    private final SessionFactory sessionFactory;
+    private final EntityManagerFactory entityManagerFactory;
 
     @Override
     public Book save(Book book) {
-        Session session = null;
-        Transaction transaction = null;
+        EntityManager entityManager = null;
+        EntityTransaction transaction = null;
         try {
-            session = sessionFactory.openSession();
-            transaction = session.beginTransaction();
-            session.persist(book);
+            entityManager = entityManagerFactory.createEntityManager();
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            entityManager.persist(book);
             transaction.commit();
             return book;
         } catch (Exception e) {
@@ -30,17 +32,29 @@ public class BookRepositoryImpl implements BookRepository {
             }
             throw new DataProcessingException("Can't insert book into DB: " + book);
         } finally {
-            if (session != null) {
-                session.close();
+            if (entityManager != null) {
+                entityManager.close();
             }
         }
     }
 
     @Override
+    public Optional<Book> findById(Long id) {
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            String hql = "FROM Book b WHERE b.id = :bookId";
+            Book book = entityManager.createQuery(hql, Book.class)
+                    .setParameter("bookId", id)
+                    .getSingleResult();
+            return Optional.ofNullable(book);
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get all books", e);
+        }
+    }
+
+    @Override
     public List<Book> findAll() {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Book> query = session.createQuery("FROM Book",Book.class);
-            return query.getResultList();
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            return entityManager.createQuery("FROM Book", Book.class).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get all books", e);
         }
