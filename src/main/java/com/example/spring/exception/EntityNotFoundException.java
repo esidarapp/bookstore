@@ -1,7 +1,7 @@
 package com.example.spring.exception;
 
 public class EntityNotFoundException extends RuntimeException {
-    public EntityNotFoundException(String s) {
-        super(s);
+    public EntityNotFoundException(String message) {
+        super(message);
     }
 }
