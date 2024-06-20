@@ -1,4 +1,4 @@
-package com.example.spring.repository;
+package com.example.spring.repository.filter;
 
 import com.example.spring.model.Book;
 import java.util.List;

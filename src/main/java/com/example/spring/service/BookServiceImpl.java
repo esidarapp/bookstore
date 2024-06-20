@@ -7,7 +7,7 @@ import com.example.spring.exception.EntityNotFoundException;
 import com.example.spring.mapper.BookMapper;
 import com.example.spring.model.Book;
 import com.example.spring.repository.BookRepository;
-import com.example.spring.repository.BookSpecificationBuilder;
+import com.example.spring.repository.filter.BookSpecificationBuilder;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
