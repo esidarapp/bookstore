@@ -9,7 +9,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +32,7 @@ public class BookController {
 
     @GetMapping
     @Operation(summary = "Get all books", description = "Get a list of all available books")
-    public List<BookDto> findAll(Pageable pageable) {
+    public List<BookDto> findAll(@ParameterObject @PageableDefault Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
@@ -48,7 +50,8 @@ public class BookController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update book by id", description = "Update book by id")
-    public BookDto updateById(@PathVariable Long id, @RequestBody CreateBookRequestDto requestDto) {
+    public BookDto updateById(@PathVariable Long id,
+                              @RequestBody @Valid CreateBookRequestDto requestDto) {
         return bookService.updateById(id, requestDto);
     }
 
@@ -61,7 +64,8 @@ public class BookController {
 
     @Operation(summary = "Search books by params", description = "Search books by params")
     @GetMapping("/search")
-    public List<BookDto> search(BookSearchParameters searchParameters) {
+    public List<BookDto> search(
+            @ParameterObject @PageableDefault BookSearchParameters searchParameters) {
         return bookService.search(searchParameters);
     }
 }
