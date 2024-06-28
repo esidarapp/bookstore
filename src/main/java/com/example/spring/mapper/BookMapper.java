@@ -1,8 +1,8 @@
 package com.example.spring.mapper;
 
 import com.example.spring.config.MapperConfig;
-import com.example.spring.dto.BookDto;
-import com.example.spring.dto.CreateBookRequestDto;
+import com.example.spring.dto.book.BookDto;
+import com.example.spring.dto.book.CreateBookRequestDto;
 import com.example.spring.model.Book;
 import java.util.List;
 import org.mapstruct.Mapper;

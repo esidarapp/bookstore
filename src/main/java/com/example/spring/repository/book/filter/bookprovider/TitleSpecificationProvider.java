@@ -1,7 +1,7 @@
-package com.example.spring.repository.filter.book;
+package com.example.spring.repository.book.filter.bookprovider;
 
 import com.example.spring.model.Book;
-import com.example.spring.repository.filter.SpecificationProvider;
+import com.example.spring.repository.book.filter.SpecificationProvider;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 

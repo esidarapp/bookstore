@@ -1,4 +1,4 @@
-package com.example.spring.repository.filter;
+package com.example.spring.repository.book.filter;
 
 import org.springframework.data.jpa.domain.Specification;
 
