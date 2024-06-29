@@ -1,9 +1,9 @@
 package com.example.spring.controller;
 
-import com.example.spring.dto.BookDto;
-import com.example.spring.dto.BookSearchParameters;
-import com.example.spring.dto.CreateBookRequestDto;
-import com.example.spring.service.BookService;
+import com.example.spring.dto.book.BookDto;
+import com.example.spring.dto.book.BookSearchParameters;
+import com.example.spring.dto.book.CreateBookRequestDto;
+import com.example.spring.service.book.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
