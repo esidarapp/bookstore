@@ -3,6 +3,7 @@ package com.example.spring.service.book;
 import com.example.spring.dto.book.BookDto;
 import com.example.spring.dto.book.BookSearchParameters;
 import com.example.spring.dto.book.CreateBookRequestDto;
+import com.example.spring.dto.book.UpdateBookRequestDto;
 import com.example.spring.exception.EntityNotFoundException;
 import com.example.spring.mapper.BookMapper;
 import com.example.spring.model.Book;
@@ -42,7 +43,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto updateById(Long id, CreateBookRequestDto requestDto) {
+    public BookDto updateById(Long id, UpdateBookRequestDto requestDto) {
         Book book = findBookById(id);
         bookMapper.updateBookFromDto(requestDto, book);
         bookRepository.save(book);

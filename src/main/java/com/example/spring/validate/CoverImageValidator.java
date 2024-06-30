@@ -9,10 +9,10 @@ public class CoverImageValidator implements ConstraintValidator<CoverImage, Stri
     private static final String IMAGE_URL_PATTERN = "^(https?|ftp)://.*(jpeg|jpg|gif|png)$";
 
     @Override
-    public boolean isValid(String coverImage,
-                           ConstraintValidatorContext constraintValidatorContext) {
-        return coverImage != null && Pattern.compile(IMAGE_URL_PATTERN)
-                .matcher(coverImage)
-                .matches();
+    public boolean isValid(String coverImage, ConstraintValidatorContext context) {
+        if (coverImage == null) {
+            return true;
+        }
+        return Pattern.compile(IMAGE_URL_PATTERN).matcher(coverImage).matches();
     }
 }

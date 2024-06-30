@@ -13,11 +13,11 @@ import org.hibernate.validator.constraints.Length;
 public class UserRegistrationRequestDto {
     @Email
     private String email;
-    @Length(min = 8, max = 255)
+    @Length(min = 3, max = 255)
     @NotBlank
     private String password;
     @NotBlank
-    @Length(min = 8, max = 255)
+    @Length(min = 3, max = 255)
     private String repeatPassword;
     @Length(max = 255)
     @NotBlank
