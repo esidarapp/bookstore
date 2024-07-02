@@ -2,6 +2,7 @@ package com.example.spring.service.user;
 
 import com.example.spring.dto.user.UserRegistrationRequestDto;
 import com.example.spring.dto.user.UserResponseDto;
+import com.example.spring.exception.EntityNotFoundException;
 import com.example.spring.exception.RegisterException;
 import com.example.spring.mapper.UserMapper;
 import com.example.spring.model.Role;
@@ -29,12 +30,12 @@ public class UserServiceImpl implements UserService {
             throw new RegisterException("User with email "
                     + request.getEmail() + " already exists.");
         }
-        request.setPassword(passwordEncoder.encode(request.getPassword()));
+        User user = userMapper.toModel(request);
         Role userRole = roleRepository.findByName(Role.RoleName.USER)
-                .orElseThrow(() -> new RuntimeException("Role USER not found"));
-        User newUser = userMapper.toModel(request);
-        newUser.setRoles(Set.of(userRole));
-        return userMapper.toDto(userRepository.save(newUser));
+                .orElseThrow(() -> new EntityNotFoundException("Role USER not found"));
+        user.setRoles(Set.of(userRole));
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        return userMapper.toDto(userRepository.save(user));
     }
 
     @Override

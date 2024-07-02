@@ -7,5 +7,3 @@ databaseChangeLog:
       file: db/changelog/changes/03-create-roles-table.yaml
   - include:
       file: db/changelog/changes/04-create-users-roles-table.yaml
-  - include:
-      file: db/changelog/changes/05-add-foreign-keys-to-users-roles-table.yaml

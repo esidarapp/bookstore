@@ -3,24 +3,24 @@ package com.example.spring.dto.book;
 import com.example.spring.validate.annotations.CoverImage;
 import com.example.spring.validate.annotations.Isbn;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import lombok.Data;
 
 @Data
 public class CreateBookRequestDto {
-    @NotNull
+    @NotBlank
     private String title;
-    @NotNull
+    @NotBlank
     private String author;
-    @NotNull
+    @NotBlank
     @Isbn
     private String isbn;
     @Min(0)
     private BigDecimal price;
-    @NotNull
+    @NotBlank
     private String description;
-    @NotNull
+    @NotBlank
     @CoverImage
     private String coverImage;
 }

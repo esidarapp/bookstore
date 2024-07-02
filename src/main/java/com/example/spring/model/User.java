@@ -50,15 +50,14 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
         for (Role role : roles) {
             if (role.getName() == Role.RoleName.ADMIN) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-                return authorities;
+                authorities.add(new SimpleGrantedAuthority(Role.RoleName.ADMIN.toString()));
             }
         }
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
