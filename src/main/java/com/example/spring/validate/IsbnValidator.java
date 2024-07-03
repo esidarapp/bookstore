@@ -9,7 +9,10 @@ public class IsbnValidator implements ConstraintValidator<Isbn,String> {
     private static final String ISBN_PATTERN = "^97[89]-\\d{1,5}-\\d{1,7}-\\d{1,7}-\\d$";
 
     @Override
-    public boolean isValid(String isbn, ConstraintValidatorContext constraintValidatorContext) {
-        return isbn != null && Pattern.compile(ISBN_PATTERN).matcher(isbn).matches();
+    public boolean isValid(String isbn, ConstraintValidatorContext context) {
+        if (isbn == null) {
+            return true;
+        }
+        return Pattern.compile(ISBN_PATTERN).matcher(isbn).matches();
     }
 }
