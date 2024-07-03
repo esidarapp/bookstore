@@ -9,7 +9,6 @@ import com.example.spring.model.Role;
 import com.example.spring.model.User;
 import com.example.spring.repository.role.RoleRepository;
 import com.example.spring.repository.user.UserRepository;
-import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,17 +30,10 @@ public class UserServiceImpl implements UserService {
                     + request.getEmail() + " already exists.");
         }
         User user = userMapper.toModel(request);
-        Role userRole = roleRepository.findByName(Role.RoleName.USER)
+        Role userRole = roleRepository.findByName(Role.RoleName.ROLE_USER)
                 .orElseThrow(() -> new EntityNotFoundException("Role USER not found"));
         user.setRoles(Set.of(userRole));
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         return userMapper.toDto(userRepository.save(user));
-    }
-
-    @Override
-    public List<UserResponseDto> findAllUsers() {
-        return userRepository.findAll().stream()
-                .map(userMapper::toDto)
-                .toList();
     }
 }

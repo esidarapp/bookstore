@@ -19,7 +19,6 @@ import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
@@ -54,14 +53,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        for (Role role : roles) {
-            if (role.getName() == Role.RoleName.ADMIN) {
-                authorities.add(new SimpleGrantedAuthority(Role.RoleName.ADMIN.toString()));
-            }
-        }
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        return authorities;
+        return roles;
     }
 
     @Override
