@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-categories-column-to-books
+      author: eugene
+      changes:
+        - addColumn:
+            tableName: books
+            columns:
+              - column:
+                  name: categories
+                  type: varchar(255)
+
+  - changeSet:
+      id: create-books-categories-table
+      author: eugene
+      changes:
+        - createTable:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: book_id
+            baseTableName: books_categories
+            constraintName: fk_books_categories_book
+            referencedColumnNames: id
+            referencedTableName: books
+        - addForeignKeyConstraint:
+            baseColumnNames: category_id
+            baseTableName: books_categories
+            constraintName: fk_books_categories_category
+            referencedColumnNames: id
+            referencedTableName: categories

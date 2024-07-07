@@ -1,6 +1,7 @@
 package com.example.spring.controller;
 
 import com.example.spring.dto.book.BookDto;
+import com.example.spring.dto.book.BookDtoWithoutCategoryIds;
 import com.example.spring.dto.book.BookSearchParameters;
 import com.example.spring.dto.book.CreateBookRequestDto;
 import com.example.spring.dto.book.UpdateBookRequestDto;
@@ -42,7 +43,7 @@ public class BookController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     @Operation(summary = "Find book by id", description = "Find book by id")
-    public BookDto findById(@PathVariable Long id) {
+    public BookDtoWithoutCategoryIds findById(@PathVariable Long id) {
         return bookService.findById(id);
     }
 
