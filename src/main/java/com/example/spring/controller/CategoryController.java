@@ -69,5 +69,4 @@ public class CategoryController {
     public List<BookDto> getBooksByCategoryId(@PathVariable Long id) {
         return bookService.getBooksByCategoryId(id);
     }
-
 }
