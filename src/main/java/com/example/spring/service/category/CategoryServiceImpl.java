@@ -68,13 +68,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Set<Category> mapCategoryIdsToCategories(UpdateBookRequestDto requestDto) {
         List<Long> categoryIds = requestDto.getCategoryIds();
-        Set<Category> categories = new HashSet<>();
-        for (Long id : categoryIds) {
-            Category category = categoryRepository.findById(id).orElseThrow(
-                    () -> new EntityNotFoundException("Can't find category by id " + id)
-            );
-            categories.add(category);
+        List<Category> categoriesList = categoryRepository.findAllById(categoryIds);
+        if (categoriesList.size() != categoryIds.size()) {
+            throw new EntityNotFoundException("One or more categories not found");
         }
-        return categories;
+        return new HashSet<>(categoriesList);
     }
 }
