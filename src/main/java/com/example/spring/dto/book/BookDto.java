@@ -1,9 +1,14 @@
 package com.example.spring.dto.book;
 
 import java.math.BigDecimal;
-import lombok.Data;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class BookDto {
     private Long id;
     private String title;
@@ -12,4 +17,5 @@ public class BookDto {
     private BigDecimal price;
     private String description;
     private String coverImage;
+    private List<Long> categoryIds;
 }

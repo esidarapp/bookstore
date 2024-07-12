@@ -1,6 +1,7 @@
 package com.example.spring.service.book;
 
 import com.example.spring.dto.book.BookDto;
+import com.example.spring.dto.book.BookDtoWithoutCategoryIds;
 import com.example.spring.dto.book.BookSearchParameters;
 import com.example.spring.dto.book.CreateBookRequestDto;
 import com.example.spring.dto.book.UpdateBookRequestDto;
@@ -12,11 +13,13 @@ public interface BookService {
 
     List<BookDto> findAll(Pageable pageable);
 
-    BookDto findById(Long id);
+    BookDtoWithoutCategoryIds findById(Long id);
 
     BookDto updateById(Long id, UpdateBookRequestDto requestDto);
 
     void deleteById(Long id);
 
     List<BookDto> search(BookSearchParameters params);
+
+    List<BookDto> getBooksByCategoryId(Long categoryId);
 }
