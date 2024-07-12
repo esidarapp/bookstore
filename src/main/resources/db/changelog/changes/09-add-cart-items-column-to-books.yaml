@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-cart-items-column-to-books
+      author: eugene
+      changes:
+        - addColumn:
+            tableName: books
+            columns:
+              - column:
+                  name: cart_items
+                  type: varchar(255)
