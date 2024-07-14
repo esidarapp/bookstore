@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,20 +34,18 @@ public class CartController {
     @PostMapping
     @Operation(summary = "Add item to shopping cart",
             description = "Add a new item to the user's shopping cart")
-    public void save(@RequestBody @Valid CartItemRequestDto cartItemRequestDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        cartService.save(email, cartItemRequestDto);
+    public void save(@RequestBody @Valid CartItemRequestDto cartItemRequestDto,
+                     Authentication authentication) {
+        cartService.save(authentication.getName(), cartItemRequestDto);
     }
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping
     @Operation(summary = "Get user's shopping cart",
             description = "Retrieve the user's shopping cart")
-    public ShoppingCartDto find(@ParameterObject @PageableDefault Pageable pageable) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        return cartService.find(email,pageable);
+    public ShoppingCartDto find(@ParameterObject @PageableDefault Pageable pageable,
+                                Authentication authentication) {
+        return cartService.find(authentication.getName(),pageable);
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -56,19 +53,16 @@ public class CartController {
     @Operation(summary = "Update item in shopping cart",
             description = "Update the quantity or other properties of an item in the shopping cart")
     public CartItemDto updateById(@PathVariable Long id,
-                                  @RequestBody @Valid UpdateCartItemRequestDto requestDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        return cartService.updateById(email, id, requestDto);
+                                  @RequestBody @Valid UpdateCartItemRequestDto requestDto,
+                                  Authentication authentication) {
+        return cartService.updateById(authentication.getName(), id, requestDto);
     }
 
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/items/{id}")
     @Operation(summary = "Remove item from shopping cart",
             description = "Delete an item from the user's shopping cart")
-    public void deleteById(@PathVariable Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        cartService.deleteById(email, id);
+    public void deleteById(@PathVariable Long id, Authentication authentication) {
+        cartService.deleteById(authentication.getName(), id);
     }
 }

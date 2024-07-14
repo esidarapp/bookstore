@@ -25,6 +25,7 @@ public class CartServiceImpl implements CartService {
     private final CartItemRepository cartItemRepository;
 
     @Override
+    @Transactional
     public ShoppingCartDto save(String email, CartItemRequestDto cartItemRequestDto) {
         CartItem cartItem = cartItemMapper.toModel(cartItemRequestDto);
         ShoppingCart shoppingCart = findByUser(email);
@@ -35,12 +36,14 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public ShoppingCartDto find(String email, Pageable pageable) {
         ShoppingCart shoppingCart = findByUser(email);
         return shoppingCartMapper.toDto(shoppingCart);
     }
 
     @Override
+    @Transactional
     public CartItemDto updateById(String email, Long id, UpdateCartItemRequestDto requestDto) {
         ShoppingCart shoppingCart = findByUser(email);
         CartItem cartItemToUpdate = shoppingCart.getCartItems().stream()

@@ -29,9 +29,6 @@ public abstract class CartItemMapper {
 
     @Named("bookFromId")
     public Book bookFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
         return bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(
                         "Can't find book by id " + id));
