@@ -1,17 +1,18 @@
 package com.example.spring.service.cart;
 
-import com.example.spring.dto.cartitem.CartItemDto;
 import com.example.spring.dto.cartitem.CartItemRequestDto;
 import com.example.spring.dto.cartitem.UpdateCartItemRequestDto;
 import com.example.spring.dto.shoppingcart.ShoppingCartDto;
-import org.springframework.data.domain.Pageable;
+import com.example.spring.model.User;
 
 public interface CartService {
-    public ShoppingCartDto save(String email, CartItemRequestDto cartItemRequestDto);
+    ShoppingCartDto addBookToCart(Long userId, CartItemRequestDto cartItemRequestDto);
 
-    ShoppingCartDto find(String email,Pageable pageable);
+    ShoppingCartDto getUsersCart(Long userId);
 
-    CartItemDto updateById(String email, Long id, UpdateCartItemRequestDto requestDto);
+    ShoppingCartDto updateById(Long userId, Long itemId, UpdateCartItemRequestDto requestDto);
 
-    void deleteById(String email, Long id);
+    void deleteById(Long userId, Long itemId);
+
+    void createShoppingCart(User user);
 }
