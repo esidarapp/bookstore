@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("Role USER not found"));
         user.setRoles(Set.of(userRole));
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        cartService.createShoppingCart(user);
         userRepository.save(user);
+        cartService.createShoppingCart(user);
         return userMapper.toDto(userRepository.save(user));
     }
 }
