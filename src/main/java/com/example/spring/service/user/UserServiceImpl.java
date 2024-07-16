@@ -9,6 +9,7 @@ import com.example.spring.model.Role;
 import com.example.spring.model.User;
 import com.example.spring.repository.role.RoleRepository;
 import com.example.spring.repository.user.UserRepository;
+import com.example.spring.service.cart.CartService;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final CartService cartService;
 
     @Override
     public UserResponseDto register(
@@ -34,6 +36,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("Role USER not found"));
         user.setRoles(Set.of(userRole));
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        userRepository.save(user);
+        cartService.createShoppingCart(user);
         return userMapper.toDto(userRepository.save(user));
     }
 }
