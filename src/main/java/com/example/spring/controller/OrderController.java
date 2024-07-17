@@ -40,9 +40,10 @@ public class OrderController {
     @Operation(summary = "Get order details",
             description = "Retrieves the details of a specific order for the authenticated user.")
     @GetMapping("/{orderId}/items")
-    public OrderDto getOrder(@PathVariable Long orderId, Authentication authentication) {
+    public List<OrderItemDto> findOrderItemsByOrder(@PathVariable Long orderId,
+                                                    Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        return orderService.getOrder(user.getId(), orderId);
+        return orderService.findOrderItemsByOrder(user.getId(), orderId);
     }
 
     @PreAuthorize("hasRole('USER')")

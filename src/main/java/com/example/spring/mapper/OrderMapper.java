@@ -14,5 +14,4 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface OrderMapper {
     @Mapping(source = "user.id", target = "userId")
     OrderDto toDto(Order order);
-
 }

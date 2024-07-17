@@ -11,7 +11,7 @@ public interface OrderService {
 
     List<OrderDto> getOrders(Long userId);
 
-    OrderDto getOrder(Long userId, Long orderId);
+    List<OrderItemDto> findOrderItemsByOrder(Long userId, Long orderId);
 
     OrderItemDto getOrderItem(Long userId, Long orderId, Long itemId);
 

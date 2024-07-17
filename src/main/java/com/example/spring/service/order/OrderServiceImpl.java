@@ -4,6 +4,7 @@ import com.example.spring.dto.order.OrderDto;
 import com.example.spring.dto.order.OrderItemDto;
 import com.example.spring.dto.order.OrderItemRequestDto;
 import com.example.spring.dto.order.UpdateOrderStatusRequestDto;
+import com.example.spring.exception.DataProcessingException;
 import com.example.spring.exception.EntityNotFoundException;
 import com.example.spring.mapper.OrderItemMapper;
 import com.example.spring.mapper.OrderMapper;
@@ -14,20 +15,18 @@ import com.example.spring.model.ShoppingCart;
 import com.example.spring.model.User;
 import com.example.spring.repository.order.OrderItemRepository;
 import com.example.spring.repository.order.OrderRepository;
+import com.example.spring.repository.user.UserRepository;
 import com.example.spring.service.cart.CartService;
-import com.example.spring.service.user.UserService;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final OrderMapper orderMapper;
@@ -37,6 +36,13 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderDto addOrder(Long userId, OrderItemRequestDto orderItemRequestDto) {
+        ShoppingCart cart = cartService.findByUserId(userId);
+        if (cart.getCartItems().isEmpty()) {
+            throw new DataProcessingException(
+                    String.format(
+                            "Shopping cart for user with id %d is empty", userId));
+        }
+
         Order order = createOrder(userId, orderItemRequestDto);
         orderRepository.save(order);
         setOrderItems(order, userId);
@@ -49,20 +55,20 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = orderRepository.findAllByUserId(userId);
         return orders.stream()
                 .map(orderMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     @Transactional
-    public OrderDto getOrder(Long userId, Long orderId) {
-        Order order = orderRepository.findById(orderId)
+    public List<OrderItemDto> findOrderItemsByOrder(Long userId, Long orderId) {
+        Order order = orderRepository.findByIdAndUserId(orderId, userId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        String.format("Order with id %d not found", orderId)));
-        if (!order.getUser().getId().equals(userId)) {
-            throw new EntityNotFoundException(String.format(
-                    "Order with id %d not found for user with id %d", orderId, userId));
-        }
-        return orderMapper.toDto(order);
+                        String.format(
+                                "Order with id %d for user with id %d not found",
+                                orderId, userId)));
+        return order.getOrderItems().stream()
+                .map(orderItemMapper::toDto)
+                .toList();
     }
 
     @Override
@@ -70,11 +76,8 @@ public class OrderServiceImpl implements OrderService {
     public OrderItemDto getOrderItem(Long userId, Long orderId, Long itemId) {
         OrderItem orderItem = orderItemRepository.findByIdAndOrderId(itemId, orderId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(
-                        "Item with id %d not found in order with id %d", itemId, orderId)));
-        if (!orderItem.getOrder().getUser().getId().equals(userId)) {
-            throw new EntityNotFoundException(String.format(
-                    "Order with id %d not found for user with id %d", orderId, userId));
-        }
+                        "Item with id %d not found in order with id %d for user with id %d",
+                        itemId, orderId, userId)));
         return orderItemMapper.toDto(orderItem);
     }
 
@@ -90,13 +93,10 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toDto(order);
     }
 
-    private void setDate(Order order) {
-        LocalDateTime localDateTime = LocalDateTime.now();
-        order.setOrderDate(localDateTime);
-    }
-
     private void setUserForOrder(Order order, Long userId) {
-        User user = userService.findById(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "User with id " + userId + " not found"));;
         order.setUser(user);
     }
 
@@ -125,10 +125,8 @@ public class OrderServiceImpl implements OrderService {
     private Order createOrder(Long userId, OrderItemRequestDto orderItemRequestDto) {
         Order order = new Order();
         order.setShippingAddress(orderItemRequestDto.shippingAddress());
-        setDate(order);
         setUserForOrder(order, userId);
         setTotalPrice(order);
-        order.setStatus(Order.Status.PENDING);
         return order;
     }
 }
