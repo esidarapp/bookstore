@@ -1,4 +1,4 @@
-package com.example.spring.dto.cartitem;
+package com.example.spring.dto.shoppingcart;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

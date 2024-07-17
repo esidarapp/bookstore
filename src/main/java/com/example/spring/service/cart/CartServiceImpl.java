@@ -1,8 +1,8 @@
 package com.example.spring.service.cart;
 
-import com.example.spring.dto.cartitem.CartItemRequestDto;
-import com.example.spring.dto.cartitem.UpdateCartItemRequestDto;
+import com.example.spring.dto.shoppingcart.CartItemRequestDto;
 import com.example.spring.dto.shoppingcart.ShoppingCartDto;
+import com.example.spring.dto.shoppingcart.UpdateCartItemRequestDto;
 import com.example.spring.exception.EntityNotFoundException;
 import com.example.spring.mapper.CartItemMapper;
 import com.example.spring.mapper.ShoppingCartMapper;
@@ -11,9 +11,11 @@ import com.example.spring.model.CartItem;
 import com.example.spring.model.ShoppingCart;
 import com.example.spring.model.User;
 import com.example.spring.repository.book.BookRepository;
-import com.example.spring.repository.cartitem.CartItemRepository;
-import com.example.spring.repository.shoppingcart.ShoppingCartRepository;
+import com.example.spring.repository.cart.CartItemRepository;
+import com.example.spring.repository.cart.ShoppingCartRepository;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -97,7 +99,21 @@ public class CartServiceImpl implements CartService {
         shoppingCartRepository.save(shoppingCart);
     }
 
-    private ShoppingCart findByUserId(Long id) {
+    @Override
+    @Transactional
+    public void deleteCartItems(Long userId) {
+        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "User with id" + userId + "not found!"));
+        List<CartItem> cartItems = new ArrayList<>(shoppingCart.getCartItems());
+        for (CartItem cartItem : cartItems) {
+            cartItemRepository.delete(cartItem);
+        }
+        shoppingCart.getCartItems().clear();
+        shoppingCartRepository.save(shoppingCart);
+    }
+
+    public ShoppingCart findByUserId(Long id) {
         return shoppingCartRepository.findByUserId(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                                 "Can't find shopping cart for user by id " + id));

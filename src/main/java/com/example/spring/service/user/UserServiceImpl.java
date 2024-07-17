@@ -40,4 +40,11 @@ public class UserServiceImpl implements UserService {
         cartService.createShoppingCart(user);
         return userMapper.toDto(userRepository.save(user));
     }
+
+    @Override
+    public User findById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "User with id " + userId + " not found"));
+    }
 }
