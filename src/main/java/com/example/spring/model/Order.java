@@ -22,7 +22,6 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.commons.lang3.builder.ToStringExclude;
 
 @Entity
 @Getter
@@ -54,7 +53,6 @@ public class Order {
     private String shippingAddress;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToStringExclude
     private Set<OrderItem> orderItems = new HashSet<>();
 
     public enum Status {

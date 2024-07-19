@@ -1,9 +1,9 @@
 package com.example.spring.dto.order;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public record OrderItemRequestDto(
-        @NotNull
+        @NotBlank
         String shippingAddress
 ) {
 }

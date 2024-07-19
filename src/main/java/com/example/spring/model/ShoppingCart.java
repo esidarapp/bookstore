@@ -36,4 +36,8 @@ public class ShoppingCart {
 
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CartItem> cartItems = new HashSet<>();
+
+    public void clearCart() {
+        cartItems.clear();
+    }
 }

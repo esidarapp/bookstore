@@ -14,8 +14,6 @@ import com.example.spring.repository.book.BookRepository;
 import com.example.spring.repository.cart.CartItemRepository;
 import com.example.spring.repository.cart.ShoppingCartRepository;
 import jakarta.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -96,20 +94,6 @@ public class CartServiceImpl implements CartService {
     public void createShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
-        shoppingCartRepository.save(shoppingCart);
-    }
-
-    @Override
-    @Transactional
-    public void deleteCartItems(Long userId) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "User with id" + userId + "not found!"));
-        List<CartItem> cartItems = new ArrayList<>(shoppingCart.getCartItems());
-        for (CartItem cartItem : cartItems) {
-            cartItemRepository.delete(cartItem);
-        }
-        shoppingCart.getCartItems().clear();
         shoppingCartRepository.save(shoppingCart);
     }
 
