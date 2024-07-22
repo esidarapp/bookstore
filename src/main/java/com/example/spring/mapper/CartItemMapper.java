@@ -1,8 +1,8 @@
 package com.example.spring.mapper;
 
 import com.example.spring.config.MapperConfig;
-import com.example.spring.dto.cartitem.CartItemDto;
-import com.example.spring.dto.cartitem.CartItemRequestDto;
+import com.example.spring.dto.shoppingcart.CartItemDto;
+import com.example.spring.dto.shoppingcart.CartItemRequestDto;
 import com.example.spring.model.CartItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

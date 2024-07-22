@@ -1,8 +1,8 @@
 package com.example.spring.controller;
 
-import com.example.spring.dto.cartitem.CartItemRequestDto;
-import com.example.spring.dto.cartitem.UpdateCartItemRequestDto;
+import com.example.spring.dto.shoppingcart.CartItemRequestDto;
 import com.example.spring.dto.shoppingcart.ShoppingCartDto;
+import com.example.spring.dto.shoppingcart.UpdateCartItemRequestDto;
 import com.example.spring.model.User;
 import com.example.spring.service.cart.CartService;
 import io.swagger.v3.oas.annotations.Operation;

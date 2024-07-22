@@ -1,4 +1,4 @@
-package com.example.spring.repository.cartitem;
+package com.example.spring.repository.cart;
 
 import com.example.spring.model.CartItem;
 import java.util.Optional;
