@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  db:
+  mysqldb:
     image: mysql
     restart: unless-stopped
     env_file: ./.env
@@ -25,9 +25,9 @@ services:
     ports:
       - "${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/$MYSQL_DATABASE
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:$MYSQL_DOCKER_PORT/$MYSQL_DATABASE
       SPRING_DATASOURCE_USERNAME: $MYSQL_ROOT_USERNAME
       SPRING_DATASOURCE_PASSWORD: $MYSQL_ROOT_PASSWORD
     depends_on:
-      db:
+      mysqldb:
         condition: service_healthy
