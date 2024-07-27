@@ -49,6 +49,7 @@ public class BookController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new book", description = "Create a new book")
     public BookDto save(@RequestBody @Valid CreateBookRequestDto requestDto) {
         return bookService.save(requestDto);
@@ -77,4 +78,5 @@ public class BookController {
             @ParameterObject @PageableDefault BookSearchParameters searchParameters) {
         return bookService.search(searchParameters);
     }
+
 }
