@@ -21,9 +21,7 @@ public class BookRepositoryTest {
     private BookRepository bookRepository;
 
     @Test
-    @DisplayName("""
-            Finds book by ID
-            """)
+    @DisplayName("Finds book by ID")
     @Sql(scripts = "classpath:database/add-kobzar-book-to-books-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/delete-kobzar-book-from-books-table.sql",
@@ -31,6 +29,7 @@ public class BookRepositoryTest {
     void findBookByExistedId_ReturnsBook() {
         Optional<Book> existedBook = bookRepository.findById(1L);
         Assertions.assertTrue(existedBook.isPresent(), "The book should be found");
+
         Book book = existedBook.get();
         Assertions.assertEquals("Kobzar", book.getTitle(),
                 "The book title should match");
@@ -43,7 +42,8 @@ public class BookRepositoryTest {
     void findByNonExistentId_ReturnsEmpty() {
         Long nonExistentId = 999L;
         Optional<Book> book = bookRepository.findById(nonExistentId);
-        Assertions.assertFalse(book.isPresent(), "No book should be found for a non-existent ID");
+        Assertions.assertFalse(book.isPresent(),
+                "No book should be found for a non-existent ID");
     }
 
     @Test
@@ -53,11 +53,15 @@ public class BookRepositoryTest {
     @Sql(scripts = "classpath:database/delete-kobzar-book-from-books-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void findAllWithPagination_ReturnsPaginatedBooks() {
-        Pageable pageable = Pageable.ofSize(1); // Устанавливаем размер страницы 1
+        Pageable pageable = Pageable.ofSize(1);
         Page<Book> booksPage = bookRepository.findAll(pageable);
-        Assertions.assertEquals(1, booksPage.getSize(), "Page size should be 1");
-        Assertions.assertTrue(booksPage.hasContent(), "Page should have content");
-        Assertions.assertEquals("Kobzar", booksPage.getContent().get(0).getTitle(),
+
+        Assertions.assertEquals(1, booksPage.getSize(),
+                "Page size should be 1");
+        Assertions.assertTrue(booksPage.hasContent(),
+                "Page should have content");
+        Assertions.assertEquals("Kobzar",
+                booksPage.getContent().get(0).getTitle(),
                 "The book title should match");
     }
 
@@ -70,7 +74,9 @@ public class BookRepositoryTest {
     void findBooksWithCategory_ChecksCategoryInBook() {
         Long categoryId = 1L;
         List<Book> books = bookRepository.findByCategoryId(categoryId);
-        Assertions.assertFalse(books.isEmpty(), "Books should be found for the given category ID");
+
+        Assertions.assertFalse(books.isEmpty(),
+                "Books should be found for the given category ID");
         Assertions.assertTrue(books.stream()
                         .allMatch(book -> book.getCategories().stream()
                                 .anyMatch(c -> c.getId().equals(categoryId))),
@@ -91,7 +97,9 @@ public class BookRepositoryTest {
         Book savedBook = bookRepository.save(newBook);
 
         Optional<Book> retrievedBook = bookRepository.findById(savedBook.getId());
-        Assertions.assertTrue(retrievedBook.isPresent(), "The book should be found");
+        Assertions.assertTrue(retrievedBook.isPresent(),
+                "The book should be found");
+
         Book book = retrievedBook.get();
         Assertions.assertEquals("New Book", book.getTitle(),
                 "The book title should match");
@@ -106,5 +114,4 @@ public class BookRepositoryTest {
         Assertions.assertEquals("http://example.com/newbook.jpg", book.getCoverImage(),
                 "The book cover image URL should match");
     }
-
 }

@@ -10,20 +10,21 @@ import org.springframework.data.jpa.domain.Specification;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthorSpecificationProviderTest {
+    public static final String AUTHOR_KEY = "author";
+    public static final String SAMPLE_AUTHOR = "John Doe";
     private final AuthorSpecificationProvider provider = new AuthorSpecificationProvider();
 
     @Test
     @DisplayName("Get the key of the specification provider for author")
     public void testGetKey_ShouldReturnExpectedKey() {
         String key = provider.getKey();
-        Assertions.assertEquals("author", key);
+        Assertions.assertEquals(AUTHOR_KEY, key);
     }
 
     @Test
     @DisplayName("Get the specification for author")
     public void testGetSpecification_ShouldReturnNonNullSpecification() {
-        String author = "John Doe";
-        Specification<Book> spec = provider.getSpecification(author);
+        Specification<Book> spec = provider.getSpecification(SAMPLE_AUTHOR);
         Assertions.assertNotNull(spec);
     }
 }
