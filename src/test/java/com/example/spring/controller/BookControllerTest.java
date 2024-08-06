@@ -170,7 +170,6 @@ public class BookControllerTest {
                 result.getResponse().getContentAsByteArray(), BookDto[].class);
         Assertions.assertEquals(3, actual.length);
         Assertions.assertEquals(expected, Arrays.stream(actual).toList());
-
     }
 
     @WithMockUser(username = "user", roles = {"USER"})
