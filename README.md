@@ -76,16 +76,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 
 ### Entity Relationships
 Here's a diagram representing the relationships between the entities in the Bookshop API:
-User
-├── Role
-├── Order
-│   ├── OrderItem
-│   │   └── Book
-│   └── ShoppingCart
-│       └── CartItem
-│           └── Book
-└── Book
-└── Category
+![Entity Relationships Diagram](diagram.png)
 
 
 
