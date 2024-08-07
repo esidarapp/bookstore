@@ -6,7 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.commons.lang3.builder.EqualsExclude;
 
 @Getter
 @Setter
@@ -20,7 +19,7 @@ public class BookDto {
     private BigDecimal price;
     private String description;
     private String coverImage;
-    @EqualsExclude
+    @EqualsAndHashCode.Exclude
     private List<Long> categoryIds;
 }
 
